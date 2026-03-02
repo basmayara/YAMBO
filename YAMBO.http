@@ -1,0 +1,6 @@
+@YAMBO_HostAddress = http://localhost:5102
+
+GET {{YAMBO_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
