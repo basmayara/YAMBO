@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Heart
+  - Coin
+  - Enemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Player
+  - Enemy
+  - Fire
+  - Ground
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1275509885
+    locked: 0
+  - name: password
+    uniqueID: 2374244509
+    locked: 0
+  - name: cloud
+    uniqueID: 1822214461
+    locked: 0
+  - name: cloud2
+    uniqueID: 3224152209
+    locked: 0
+  - name: herb
+    uniqueID: 3859675615
+    locked: 0
+  - name: island
+    uniqueID: 1290520259
+    locked: 0
+  - name: decor
+    uniqueID: 614272771
+    locked: 0
+  - name: 'Ground '
+    uniqueID: 2963282691
+    locked: 0
+  - name: Player
+    uniqueID: 1444769753
+    locked: 0
+  - name: Enemy
+    uniqueID: 5451273
+    locked: 0
+  - name: fire2
+    uniqueID: 2609744519
+    locked: 0
+  - name: Fire
+    uniqueID: 3131467091
+    locked: 0
+  - name: UI
+    uniqueID: 1814563225
+    locked: 0
+  - name: hearts
+    uniqueID: 749146917
+    locked: 0
+  - name: Batlle
+    uniqueID: 96957263
+    locked: 0
