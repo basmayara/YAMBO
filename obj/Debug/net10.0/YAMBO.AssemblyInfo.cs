@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("YAMBO")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c102ea109b9ea48f814bdcfc6c183ea08fbd6ad5")]
 [assembly: System.Reflection.AssemblyProductAttribute("YAMBO")]
 [assembly: System.Reflection.AssemblyTitleAttribute("YAMBO")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

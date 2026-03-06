@@ -16,7 +16,8 @@ namespace YAMBO.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().ToTable("User"); //  Map l table "User" f DB
+            modelBuilder.Entity<User>().ToTable("User"); //  Map  table "User" in DB
         }
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
     }
 }

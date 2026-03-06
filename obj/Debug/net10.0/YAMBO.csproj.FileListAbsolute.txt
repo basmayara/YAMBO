@@ -160,3 +160,8 @@ C:\Users\assus\source\repos\YAMBO\YAMBO\obj\Debug\net10.0\refint\YAMBO.dll
 C:\Users\assus\source\repos\YAMBO\YAMBO\obj\Debug\net10.0\YAMBO.pdb
 C:\Users\assus\source\repos\YAMBO\YAMBO\obj\Debug\net10.0\YAMBO.genruntimeconfig.cache
 C:\Users\assus\source\repos\YAMBO\YAMBO\obj\Debug\net10.0\ref\YAMBO.dll
+C:\Users\assus\source\repos\YAMBO\YAMBO\bin\Debug\net10.0\BCrypt.Net-Next.dll
+C:\Users\assus\source\repos\YAMBO\YAMBO\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
+C:\Users\assus\source\repos\YAMBO\YAMBO\bin\Debug\net10.0\MailKit.dll
+C:\Users\assus\source\repos\YAMBO\YAMBO\bin\Debug\net10.0\MimeKit.dll
+C:\Users\assus\source\repos\YAMBO\YAMBO\obj\Debug\net10.0\YAMBO.sourcelink.json
