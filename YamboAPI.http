@@ -1,6 +1,0 @@
-@YamboAPI_HostAddress = http://localhost:5157
-
-GET {{YamboAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
