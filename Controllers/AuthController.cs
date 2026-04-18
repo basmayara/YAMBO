@@ -4,6 +4,10 @@ using MimeKit;
 using YamboAPI.Data;
 using YamboAPI.Model;
 using BC = BCrypt.Net.BCrypt;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace YamboAPI.Controllers
 {
@@ -30,7 +34,16 @@ namespace YamboAPI.Controllers
             if (user == null || !BC.Verify(request.Password, user.PasswordHash))
                 return Unauthorized(new { success = false, message = "Email ou password incorrect." });
 
-            return Ok(new { success = true, message = "Login réussi!" });
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecret"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                claims: new[] { new Claim(ClaimTypes.Email, user.Email!) },
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: creds
+            );
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new { success = true, token = tokenString, message = "Login réussi!" });
         }
 
         [HttpPost("register")]
@@ -61,7 +74,6 @@ namespace YamboAPI.Controllers
             if (user == null)
                 return Ok(new { success = false, message = "Email not found." });
 
-            //  6 chiffres simples
             string token = new Random().Next(100000, 999999).ToString();
 
             _context.PasswordResetTokens.Add(new PasswordResetToken
@@ -107,7 +119,7 @@ namespace YamboAPI.Controllers
 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("YAMBO", fromEmail));
-            message.To.Add(new MailboxAddress("", toEmail));
+            message.To.Add(new MailboxAddress("", toEmail ?? string.Empty));
             message.Subject = "YAMBO - Reset Your Password";
             message.Body = new TextPart("plain")
             {

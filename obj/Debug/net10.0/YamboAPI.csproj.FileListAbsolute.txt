@@ -163,4 +163,6 @@ C:\Users\assus\source\repos\YamboAPI\YamboAPI\obj\Debug\net10.0\refint\YamboAPI.
 C:\Users\assus\source\repos\YamboAPI\YamboAPI\obj\Debug\net10.0\YamboAPI.pdb
 C:\Users\assus\source\repos\YamboAPI\YamboAPI\obj\Debug\net10.0\YamboAPI.genruntimeconfig.cache
 C:\Users\assus\source\repos\YamboAPI\YamboAPI\obj\Debug\net10.0\ref\YamboAPI.dll
+C:\Users\assus\source\repos\YamboAPI\YamboAPI\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\assus\source\repos\YamboAPI\YamboAPI\obj\Debug\net10.0\YamboAPI.sourcelink.json
 C:\Users\assus\source\repos\YamboAPI\YamboAPI\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

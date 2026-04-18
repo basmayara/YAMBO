@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("YamboAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ed6eef60a1dd68d133c7355a3753bd9893d74c5a")]
 [assembly: System.Reflection.AssemblyProductAttribute("YamboAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("YamboAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
