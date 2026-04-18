@@ -1,40 +1,31 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PasswordToggle : MonoBehaviour
 {
-    public TMP_InputField passwordField;
-    public Image eyeIcon;
 
     public Sprite openEye;
     public Sprite closedEye;
 
-    private bool isHidden = true;
-
-    void Start()
+    public void TogglePassword(TMP_InputField targetField)
     {
-        passwordField.contentType = TMP_InputField.ContentType.Password;
-        eyeIcon.sprite = closedEye;
-        passwordField.ForceLabelUpdate();
-        isHidden = true;
-    }
-
-    public void TogglePassword()
-    {
-        isHidden = !isHidden;
-
-        if (isHidden)
+        if (targetField.contentType == TMP_InputField.ContentType.Password)
         {
-            passwordField.contentType = TMP_InputField.ContentType.Password;
-            eyeIcon.sprite = closedEye;
+            targetField.contentType = TMP_InputField.ContentType.Standard;
+            UpdateIcon(targetField, openEye);
         }
         else
         {
-            passwordField.contentType = TMP_InputField.ContentType.Standard;
-            eyeIcon.sprite = openEye;
+            targetField.contentType = TMP_InputField.ContentType.Password;
+            UpdateIcon(targetField, closedEye);
         }
 
-        passwordField.ForceLabelUpdate();
+        targetField.ForceLabelUpdate();
+    }
+
+    private void UpdateIcon(TMP_InputField field, Sprite newSprite)
+    {
+        UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Image>().sprite = newSprite;
     }
 }
