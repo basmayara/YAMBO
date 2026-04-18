@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "325369056419",
+    "project_id": "yambo-fb4ff",
+    "storage_bucket": "yambo-fb4ff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325369056419:android:3b822a3b9633a143e64316",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.MenuYambo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5Rw8ut5aC1yE9VKhXzjrRSl0YnUzJbG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
