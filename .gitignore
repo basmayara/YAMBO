@@ -1,18 +1,18 @@
-Assets/Scenes/Map.unity
-Assets/Scenes/CastleMap.unity
-Assets/Scenes/Map.unity.meta
-Assets/Scenes/CastleMap.unity.meta
-.plastic/
+# Unity
+Library/
+Temp/
+Logs/
+obj/
+.vs/
+
+# Backend
 Controllers/
-Model/
 Migrations/
-GameDbContext.cs
-Program.cs
-WeatherForecast.cs
-Yambo_API.csproj
-Yambo_API.http
-Yambo_API.sln
+Model/
+*.csproj
+*.sln
 appsettings.json
-appsettings.Development.json
 ignore.conf
-UpgradeLog*.htm
+
+# Plastic / Unity services
+.plastic/
