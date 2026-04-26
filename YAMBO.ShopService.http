@@ -1,0 +1,6 @@
+@YAMBO.ShopService_HostAddress = http://localhost:5029
+
+GET {{YAMBO.ShopService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
