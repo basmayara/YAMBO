@@ -1,45 +1,69 @@
-﻿using YamboAPI.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+﻿using YamboAPI.Extensions;
+using YamboAPI.Middleware;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+// Auto-reload config: when appsettings.json changes at runtime, IConfiguration reloads automatically
+// This means if you update JwtSecret or connection string in env vars → no restart needed
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) // reloadOnChange = auto-reload
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables(); // Env vars override appsettings — used in production for secrets
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//services
+// Function chaining: each extension method returns IServiceCollection so we can chain them
+builder.Services
+    .AddDatabase(builder.Configuration)         //  EF Core + SQL Server (Scoped)
+    .AddJwtAuthentication(builder.Configuration) //  JWT Bearer Auth
+    .AddCorsPolicy()                             //  CORS — policy name: "AllowAll"
+    .AddHttpCompression()                        // Brotli/Gzip response compression
+    .AddCaching()                                //  In-memory cache (RAM)
+    .AddControllers()                            //  MVC Controllers
+    .Services
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen();
 
-var jwtSecret = "GAME_SECRET_KEY_2024_YAMBO_SECURE_32CHARS!!";
+//monitoring
+//  Health checks endpoint: GET /health → returns "Healthy" if API is running
+// Used by Docker, Kubernetes, or any monitoring tool to check if service is alive
+builder.Services.AddHealthChecks();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
-builder.Services.AddCors(o => o.AddPolicy("All", b =>
-    b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.WebHost.UseUrls("http://0.0.0.0:8082");
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
-app.UseCors("All");
+// Order matters in middleware pipeline!
+
+// 1️⃣ Global exception handler — must be FIRST to catch errors from all other middleware
+app.UseMiddleware<ExceptionMiddleware>();
+
+// 2️⃣ HTTP compression — compress responses before sending
+app.UseResponseCompression();
+
+// 3️⃣ Swagger — only in development
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+// 4️⃣ CORS — allow cross-origin requests (use the named policy "AllowAll")
+app.UseCors("AllowAll");
+
+// 5️⃣ Authentication → Authorization (order is important!)
 app.UseAuthentication();
 app.UseAuthorization();
+
+// 6️⃣ Health check endpoint for monitoring
+//  Monitoring: visit GET /health to check if the API is alive
+app.MapHealthChecks("/health");
+
+// 7️⃣ Map controllers
 app.MapControllers();
+
 app.Run();
