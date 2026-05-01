@@ -1,25 +1,17 @@
 package com.example.Authentification.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-
 public class RegisterDTO {
 
-
-    private String nom;
-
-
+    private String name;
     private String email;
+    private String password;
 
-    private String motDePasse;
-
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getMotDePasse() { return motDePasse; }
-    public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }

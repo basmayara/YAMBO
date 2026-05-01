@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: yambo123
+      MYSQL_DATABASE: yambo_db
+    ports:
+      - "3307:3306"
+
+  service-auth:
+    build: .
+    container_name: service-auth
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql-db

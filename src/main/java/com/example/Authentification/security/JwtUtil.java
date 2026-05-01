@@ -2,25 +2,32 @@ package com.example.Authentification.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
+@Component
 public class JwtUtil {
 
-    private static final String SECRET = "GAME_SECRET_KEY_2024_GAME_SECRET_KEY_2024";
-    private static final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private final Key key;
 
-    public static String generateToken(String email) {
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
+    // 🔐 CREATE TOKEN
+    public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 24h
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public static String extractEmail(String token) {
+    public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
