@@ -11,8 +11,7 @@ public class LoginManager : MonoBehaviour
     public TMP_Text statusText;
 
     [Header("API Config")]
-    public string apiUrl = "https://localhost:7220/api/auth/login";
-
+    public string apiUrl = "http://192.168.1.8:8080/api/auth/login";
     public void OnLoginButtonClicked()
     {
         string email = emailInput.text.Trim();
@@ -29,22 +28,22 @@ public class LoginManager : MonoBehaviour
     private IEnumerator LoginCoroutine(string email, string password)
     {
         statusText.text = "Connecting...";
-        string json = "{\"Email\":\"" + email + "\",\"Password\":\"" + password + "\"}";
+        string json = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
 
         UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("ngrok-skip-browser-warning", "true");
         request.certificateHandler = new BypassCertificate();
 
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError)
         {
-            // Developer sees real error, user sees friendly message
-            Debug.LogError("Connection error: " + request.error);
-            statusText.text = "Cannot connect to server. Check your connection.";
+            statusText.text = "Cannot connect to server.";
         }
         else if (request.responseCode == 401)
         {
@@ -52,28 +51,16 @@ public class LoginManager : MonoBehaviour
         }
         else if (request.responseCode == 400)
         {
-            statusText.text = "Please fill in all fields.";
+            statusText.text = "Invalid request.";
         }
-        else if (request.result == UnityWebRequest.Result.Success)
+        else if (request.responseCode == 200)
         {
-            string responseText = request.downloadHandler.text;
-            Debug.Log("Response: " + responseText);
-
-            if (responseText.Contains("true"))
-            {
-                statusText.text = "Login successful!";
-                Debug.Log("Login OK!");
-                // TODO: load next scene
-            }
-            else
-            {
-                statusText.text = "Incorrect email or password.";
-            }
+            statusText.text = "Login successful!";
+            Debug.Log(request.downloadHandler.text);
         }
         else
         {
-            Debug.LogError("Unexpected error: " + request.error + " | " + request.downloadHandler.text);
-            statusText.text = "Something went wrong. Please try again.";
+            statusText.text = "Error: " + request.responseCode;
         }
     }
 

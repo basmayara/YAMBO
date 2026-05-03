@@ -10,8 +10,8 @@ public class SignUpManager : MonoBehaviour
     public TMP_InputField confirmPasswordField;
 
     [Header("Error Messages")]
-    public TextMeshProUGUI passwordErrorText;  
-    public TextMeshProUGUI serverErrorText;    
+    public TextMeshProUGUI passwordErrorText;
+    public TextMeshProUGUI serverErrorText;
 
     public LoginAPI loginAPI;
 
@@ -23,12 +23,13 @@ public class SignUpManager : MonoBehaviour
     void ClearErrors()
     {
         passwordErrorText.text = "";
-        if (serverErrorText != null)
-            serverErrorText.text = "";
+        serverErrorText.text = "";
     }
 
     public void OnRegisterButtonClicked()
     {
+        Debug.Log("Button clicked!"); // ← زيد هاد السطر
+
         ClearErrors();
 
         if (string.IsNullOrWhiteSpace(nameField.text) ||
@@ -40,24 +41,15 @@ public class SignUpManager : MonoBehaviour
             return;
         }
 
-        // Validation email
-        if (!emailField.text.Contains("@") || !emailField.text.Contains("."))
+        if (!emailField.text.Contains("@"))
         {
             serverErrorText.text = "Email invalide !";
             return;
         }
 
-        // Validation password match
         if (passwordField.text != confirmPasswordField.text)
         {
-            passwordErrorText.text = "Les mots de passe ne correspondent pas !";
-            return;
-        }
-
-        // Validation longueur password
-        if (passwordField.text.Length < 6)
-        {
-            passwordErrorText.text = "Le mot de passe doit contenir au moins 6 caractères !";
+            passwordErrorText.text = "Passwords do not match!";
             return;
         }
 
@@ -70,20 +62,14 @@ public class SignUpManager : MonoBehaviour
         );
     }
 
-    void OnSuccess(string message)
+    void OnSuccess(string msg)
     {
-        serverErrorText.text = "";
-        Debug.Log("Inscription réussie !");
-
+        serverErrorText.text = "Account created successfully!";
+        Debug.Log(msg);
     }
 
-    void OnError(string erreur)
+    void OnError(string error)
     {
-        if (erreur.Contains("déjà utilisé"))
-            serverErrorText.text = "Cet email est déjà utilisé !";
-        else if (erreur.Contains("6 caractères"))
-            passwordErrorText.text = "Le mot de passe doit contenir au moins 6 caractères !";
-        else
-            serverErrorText.text = "Erreur : " + erreur;
+        serverErrorText.text = error;
     }
 }
