@@ -5,59 +5,59 @@ using System;
 
 public class LoginAPI : MonoBehaviour
 {
-    private string baseUrl = "http://192.168.1.8:8080/api";
+    private string url = "http://localhost:8081/api/joueur/inscription";
 
-    public void Register(string name, string email, string password,
-        Action<string> onSuccess, Action<string> onError)
+    public void Register(string nom, string email, string password, Action<string> onSuccess, Action<string> onError)
     {
-        StartCoroutine(RegisterRequest(name, email, password, onSuccess, onError));
+        StartCoroutine(RegisterRequest(nom, email, password, onSuccess, onError));
     }
 
-    IEnumerator RegisterRequest(string name, string email, string password,
-        Action<string> onSuccess, Action<string> onError)
+    IEnumerator RegisterRequest(string nom, string email, string password, Action<string> onSuccess, Action<string> onError)
     {
-        string json = "{\"name\":\"" + name + "\",\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
-        UnityWebRequest req = new UnityWebRequest(baseUrl + "/player/register", "POST");
-        req.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(json));
-        req.downloadHandler = new DownloadHandlerBuffer();
-        req.SetRequestHeader("Content-Type", "application/json");
-        yield return req.SendWebRequest();
-
-        if (req.result == UnityWebRequest.Result.Success)
+        var newUser = new UserDTO
         {
-            string id = ExtractValue(req.downloadHandler.text, "id");
-            if (!string.IsNullOrEmpty(id))
-                PlayerPrefs.SetInt("playerId", int.Parse(id));
-            Debug.Log(" Register OK: " + req.downloadHandler.text);
-            onSuccess?.Invoke(req.downloadHandler.text);
+            nom = nom,
+            email = email,
+            motDePasse = password
+        };
+
+        string json = JsonUtility.ToJson(newUser);
+
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.certificateHandler = new BypassCertificate();
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            onSuccess?.Invoke(request.downloadHandler.text);
         }
         else
         {
-            Debug.LogError(" Register Error");
-            Debug.LogError("Response Code: " + req.responseCode);
-            Debug.LogError("Error: " + req.error);
-            Debug.LogError("Body: " + req.downloadHandler.text); onError?.Invoke(req.downloadHandler.text);
+            string errorResponse = request.downloadHandler.text;
+            try
+            {
+                int start = errorResponse.IndexOf("\"erreur\":\"") + 10;
+                int end = errorResponse.IndexOf("\"", start);
+                string erreur = errorResponse.Substring(start, end - start);
+                onError?.Invoke(erreur);
+            }
+            catch
+            {
+                onError?.Invoke("Erreur de connexion au serveur");
+            }
         }
     }
+}
 
-
-
-    private string ExtractValue(string json, string key)
-    {
-        string search = "\"" + key + "\":";
-        int start = json.IndexOf(search);
-        if (start == -1) return "";
-        start += search.Length;
-        if (json[start] == '"')
-        {
-            start++;
-            int end = json.IndexOf("\"", start);
-            return json.Substring(start, end - start);
-        }
-        else
-        {
-            int end = json.IndexOfAny(new char[] { ',', '}' }, start);
-            return json.Substring(start, end - start).Trim();
-        }
-    }
+[System.Serializable]
+public class UserDTO
+{
+    public string nom;
+    public string email;
+    public string motDePasse;
 }

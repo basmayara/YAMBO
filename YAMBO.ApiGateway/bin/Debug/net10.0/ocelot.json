@@ -1,0 +1,43 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/joueur/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "192.168.3.92",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/joueur/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "192.168.3.89",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/menu/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "192.168.3.94",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/menu/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://192.168.3.94:5000"
+  }
+}
